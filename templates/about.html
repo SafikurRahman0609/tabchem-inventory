@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}About - TabChem Pharma{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row align-items-center mb-5 mt-4">
+    <div class="col-lg-6 pe-lg-5">
+        <h6 class="text-primary fw-bold text-uppercase tracking-wide mb-3" style="letter-spacing: 0.1em; font-size: 0.85rem;">About TabChem Pharma</h6>
+        <h1 class="display-4 fw-bolder mb-4 text-dark" style="letter-spacing: -1.5px; line-height: 1.1;">
+            Empowering Healthcare.
+        </h1>
+        <p class="lead text-secondary mb-4" style="font-size: 1.1rem; line-height: 1.6;">
+            TabChem Pharma Private Limited is a leading distributor and manufacturer of critical pharmaceutical formulations. We partner with hospitals, clinics, and pharmacies nationwide to ensure that life-saving medicines are always available when patients need them most.
+        </p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-dark btn-lg px-4 d-inline-flex align-items-center rounded-pill" style="font-size: 0.95rem; font-weight: 600;">
+            View live inventory <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+    <div class="col-lg-6 mt-5 mt-lg-0">
+        <!-- Aesthetic Image Block -->
+        <div class="rounded-4 shadow-lg position-relative overflow-hidden" style="height: 400px; background-image: url('https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&q=80&w=1000'); background-size: cover; background-position: center;">
+            <div class="position-absolute bottom-0 w-100 p-4" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                <ul class="list-unstyled mb-0 text-white">
+                    <li class="mb-2 d-flex align-items-center"><i class="bi bi-check2-circle text-success me-3 fs-5"></i> <strong style="font-size: 1.05rem;">GMP Certified Facilities</strong></li>
+                    <li class="mb-2 d-flex align-items-center"><i class="bi bi-check2-circle text-success me-3 fs-5"></i> <strong style="font-size: 1.05rem;">24/7 Cold Chain Logistics</strong></li>
+                    <li class="mb-0 d-flex align-items-center"><i class="bi bi-check2-circle text-success me-3 fs-5"></i> <strong style="font-size: 1.05rem;">Real-time Stock Monitoring</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5" style="border-top: 1px solid #eaeaea;">
+
+<!-- Values Section Inspired by Corporate Needs -->
+<div class="mb-5 pb-5">
+    <h2 class="fw-bolder mb-3" style="letter-spacing: -1px;">Our Core Priorities</h2>
+    <p class="text-muted mb-5" style="font-size: 1.05rem;">The principles that guide our everyday pharmaceutical operations.</p>
+
+    <div class="row g-4">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 rounded-4 border-0 shadow-sm bg-white hover-up">
+                <div class="card-body p-0 d-flex flex-column">
+                    <div class="mb-3"><i class="bi bi-shield-check display-6 text-primary"></i></div>
+                    <h4 class="card-title fw-bold mb-3">Quality Assurance</h4>
+                    <p class="card-text text-secondary flex-grow-1" style="font-size: 0.95rem;">Every formulation passes rigorous FDA-aligned testing protocols before entering our active inventory. Ensuring absolute patient safety is our number one goal.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 rounded-4 border-0 shadow-sm bg-white hover-up">
+                <div class="card-body p-0 d-flex flex-column">
+                    <div class="mb-3"><i class="bi bi-diagram-3 display-6 text-primary"></i></div>
+                    <h4 class="card-title fw-bold mb-3">Supply Chain Integrity</h4>
+                    <p class="card-text text-secondary flex-grow-1" style="font-size: 0.95rem;">Our state-of-the-art end-to-end batch tracking ensures that critical medicines are never lost, damaged, or expired during transit.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 rounded-4 border-0 shadow-sm bg-white hover-up">
+                <div class="card-body p-0 d-flex flex-column">
+                    <div class="mb-3"><i class="bi bi-clock-history display-6 text-primary"></i></div>
+                    <h4 class="card-title fw-bold mb-3">Rapid Distribution</h4>
+                    <p class="card-text text-secondary flex-grow-1" style="font-size: 0.95rem;">Optimized stock thresholds allow us to instantly dispatch orders to regional healthcare providers, drastically reducing hospital waiting periods.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-up {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-up:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+}
+</style>
+{% endblock %}
