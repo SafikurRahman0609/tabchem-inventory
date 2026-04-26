@@ -1,0 +1,165 @@
+/* Dynamic Gradient Background */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #f8fafc;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+/* Override Bootstrap Text Colors inside Glass Panels */
+.glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6, 
+.glass-panel p, .glass-panel span, .glass-panel div, .glass-panel td, .glass-panel th, .glass-panel label {
+    color: #ffffff !important;
+}
+.text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+.text-dark {
+    color: #ffffff !important;
+}
+.bg-light {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Nav */
+.navbar {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+    transition: color 0.2s ease;
+}
+.navbar-brand { font-weight: 800; letter-spacing: 1px; font-size: 1.5rem; }
+.nav-link:hover { color: rgba(255,255,255,0.8) !important; }
+
+/* Summary Cards Enhancements */
+.summary-card {
+    padding: 24px;
+    border-left: 4px solid rgba(255,255,255,0.6); 
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+}
+.summary-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    background: rgba(255, 255, 255, 0.2);
+}
+.summary-card i {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Tables */
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+.custom-table thead th {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.custom-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+.custom-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.custom-table tbody tr td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Forms & Inputs */
+.form-control, .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white !important;
+    box-shadow: none !important;
+}
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.input-editable {
+    transition: all 0.2s ease;
+    color: white !important;
+}
+.input-editable:focus {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3) !important;
+    border-radius: 6px;
+    outline: none;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+    color: white !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6);
+}
+.btn-dark {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(5px);
+    color: white !important;
+    transition: background 0.2s;
+}
+.btn-dark:hover {
+    background: rgba(0,0,0,0.7);
+}
+
+/* Badges & Icons */
+.badge {
+    background-color: rgba(255,255,255,0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+}
+.text-success, .text-warning, .text-danger, .text-primary {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+/* Alerts */
+.alert {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}

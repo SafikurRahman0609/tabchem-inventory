@@ -11,25 +11,25 @@
 <!-- Summary Cards -->
 <div class="row mb-5 gx-4 gy-3">
     <div class="col-md-3">
-        <div class="summary-card border-0">
+        <div class="summary-card glass-panel border-0">
             <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Total Medicines</h6>
             <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-boxes text-primary me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ total_medicines }}</h2>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="summary-card border-0 success-card">
+        <div class="summary-card glass-panel border-0 success-card">
             <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Units In Stock</h6>
             <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-stack text-success me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ total_units }}</h2>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="summary-card border-0 warning-card">
+        <div class="summary-card glass-panel border-0 warning-card">
             <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Inventory Value</h6>
             <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-currency-dollar text-warning me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ "%.2f"|format(total_value) }}</h2>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="summary-card border-0 danger-card">
+        <div class="summary-card glass-panel border-0 danger-card">
             <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Low Stock Alerts</h6>
             <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle text-danger me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ low_stock }}</h2>
         </div>
@@ -37,7 +37,7 @@
 </div>
 
 <!-- Search Bar & Filters -->
-<div class="search-container mb-4 shadow-sm rounded-4 border-0 p-2">
+<div class="search-container glass-panel mb-4 shadow-sm rounded-4 border-0 p-2">
     <form action="{{ url_for('dashboard') }}" method="GET" class="d-flex w-100 align-items-center">
         <i class="bi bi-search text-muted ms-3 me-2"></i>
         <input type="text" name="search" class="form-control border-0 py-2 shadow-none" placeholder="Search formulations, brands, or IDs..." value="{{ search_query }}">
@@ -49,9 +49,9 @@
 </div>
 
 <!-- Main Table and Forms -->
-<div class="table-container p-4 rounded-4 shadow-sm border-0">
+<div class="table-container glass-panel p-4 rounded-4 shadow-sm border-0">
     <!-- Add Medicine Inline Form -->
-    <div class="add-medicine-row bg-light p-3 rounded-3 mb-4 border" style="border-style: dashed !important;">
+    <div class="add-medicine-row p-3 rounded-3 mb-4 border border-light text-white" style="border-style: dashed !important; background: rgba(255,255,255,0.05);">
         <h6 class="mb-3 text-muted fw-bold"><i class="bi bi-plus-circle me-1"></i> Add New Formulation</h6>
         <form action="{{ url_for('add_medicine') }}" method="POST" class="row gx-2 gy-2">
             <div class="col-md-2">
