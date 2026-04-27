@@ -53,7 +53,7 @@
     <!-- Add Medicine Inline Form -->
     <div class="add-medicine-row p-3 rounded-3 mb-4 border border-light text-white" style="border-style: dashed !important; background: rgba(255,255,255,0.05);">
         <h6 class="mb-3 text-muted fw-bold"><i class="bi bi-plus-circle me-1"></i> Add New Formulation</h6>
-        <form action="{{ url_for('add_medicine') }}" method="POST" class="row gx-2 gy-2">
+        <form action="{{ url_for('add_medicine') }}" method="POST" enctype="multipart/form-data" class="row gx-2 gy-2">
             <div class="col-md-2">
                 <input type="text" class="form-control shadow-none" name="name" placeholder="Name" required>
             </div>
@@ -72,6 +72,9 @@
             <div class="col-md-1">
                 <input type="number" class="form-control shadow-none" name="stock" placeholder="Stock" required>
             </div>
+            <div class="col-md-2">
+                <input type="file" class="form-control shadow-none" name="image" accept="image/*">
+            </div>
             <div class="col-md-1">
                 <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">Add</button>
             </div>
@@ -83,6 +86,7 @@
         <table class="table custom-table align-middle mb-0">
             <thead>
                 <tr>
+                    <th style="width: 10%">Image</th>
                     <th style="width: 17%">Name</th>
                     <th style="width: 15%">Brand</th>
                     <th style="width: 25%">Formula</th>
@@ -96,7 +100,22 @@
                 {% for med in medicines %}
                 <tr class="{% if med.stock <= 40 %}bg-danger bg-opacity-10 border-danger{% endif %}">
                     <td>
-                        <form id="update-form-{{ med.id }}" action="{{ url_for('update_medicine', id=med.id) }}" method="POST"></form>
+                        {% if med.image_filename %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ med.image_filename) }}"
+                                alt="{{ med.name }}"
+                                style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                        {% else %}
+                            <span class="text-muted small">No image</span>
+                        {% endif %}
+
+                        <input type="file"
+                            form="update-form-{{ med.id }}"
+                            class="form-control form-control-sm mt-2"
+                            name="image"
+                            accept="image/*">
+                    </td>
+                    <td>
+                        <form id="update-form-{{ med.id }}" action="{{ url_for('update_medicine', id=med.id) }}" method="POST" enctype="multipart/form-data"></form>
                         <input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable fw-bold" name="name" value="{{ med.name }}" required>
                     </td>
                     <td><input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable text-muted" name="brand" value="{{ med.brand }}" required></td>
