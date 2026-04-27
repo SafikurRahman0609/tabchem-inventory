@@ -1,6 +1,28 @@
 from flask import render_template, request, redirect, url_for, flash, session
+from werkzeug.utils import secure_filename
 from app import app, db
 from app.models import Medicine
+import os
+import uuid
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def save_uploaded_image(file):
+    if file and file.filename != '' and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        unique_filename = f"{uuid.uuid4().hex}_{filename}"
+
+        upload_path = app.config['UPLOAD_FOLDER']
+        os.makedirs(upload_path, exist_ok=True)
+
+        file.save(os.path.join(upload_path, unique_filename))
+        return unique_filename
+
+    return None
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,7 +79,7 @@ def dashboard():
 def add_medicine():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-    
+
     if request.method == 'POST':
         name = request.form['name']
         brand = request.form['brand']
@@ -65,11 +87,27 @@ def add_medicine():
         dosage = request.form['dosage']
         price = float(request.form['price'])
         stock = int(request.form['stock'])
-        
-        new_med = Medicine(name=name, brand=brand, formula=formula, dosage=dosage, price=price, stock=stock)
+
+        image_file = request.files.get('image')
+        print("IMAGE FILE:", image_file)
+        print("IMAGE FILENAME:", image_file.filename if image_file else "No file received")
+
+        image_filename = save_uploaded_image(image_file)
+        print("SAVED IMAGE NAME:", image_filename)
+
+        new_med = Medicine(
+            name=name,
+            brand=brand,
+            formula=formula,
+            dosage=dosage,
+            price=price,
+            stock=stock,
+            image_filename=image_filename
+        )
+
         db.session.add(new_med)
         db.session.commit()
-        
+
         flash('Medicine added successfully!', 'success')
         return redirect(url_for('dashboard'))
 
@@ -77,8 +115,9 @@ def add_medicine():
 def update_medicine(id):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-        
+
     med = Medicine.query.get_or_404(id)
+
     if request.method == 'POST':
         med.name = request.form['name']
         med.brand = request.form['brand']
@@ -86,11 +125,17 @@ def update_medicine(id):
         med.dosage = request.form['dosage']
         med.price = float(request.form['price'])
         med.stock = int(request.form['stock'])
-        
+
+        image_file = request.files.get('image')
+        image_filename = save_uploaded_image(image_file)
+
+        if image_filename:
+            med.image_filename = image_filename
+
         db.session.commit()
         flash('Medicine updated successfully!', 'success')
         return redirect(url_for('dashboard'))
-
+    
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete_medicine(id):
     if not session.get('logged_in'):
