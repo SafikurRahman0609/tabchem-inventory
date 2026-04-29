@@ -8,6 +8,7 @@ class Medicine(db.Model):
     dosage = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
+    image_filename = db.Column(db.String(255))
 
     def __repr__(self):
         return f'<Medicine {self.name}>'

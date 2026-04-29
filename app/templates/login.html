@@ -3,30 +3,43 @@
 {% block title %}Login - TabChem Pharma{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center mt-5">
-    <div class="col-md-5">
-        <div class="card glass-panel shadow-lg border-0 rounded-4 mt-5">
-            <div class="card-body p-5">
+<div class="auth-layout">
+    <div class="row g-4 align-items-stretch">
+        <div class="col-lg-6">
+            <div class="feature-card auth-story h-100">
+                <span class="section-kicker">Internal Platform</span>
+                <h1 class="page-title mb-3">Sign in to the TabChem inventory workspace.</h1>
+                <p class="page-subtitle">The refreshed interface keeps stock work clearer, lighter, and easier to manage while product image handling stays built right into the workflow.</p>
+                <div class="auth-points">
+                    <div><i class="bi bi-check2-circle"></i> Live medicine inventory management</div>
+                    <div><i class="bi bi-check2-circle"></i> Product image upload and preview</div>
+                    <div><i class="bi bi-check2-circle"></i> Faster low-stock visibility</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="section-card auth-card">
                 <div class="text-center mb-4">
-                    <h2 class="fw-bold mb-1" style="letter-spacing: -1px;">Employee Login</h2>
-                    <p class="text-muted">Sign in to access the TabChem System.</p>
+                    <span class="section-kicker">Employee Access</span>
+                    <h2 class="section-title mt-2">Login to continue</h2>
+                    <p class="section-note mb-0">Sign in to access the TabChem system.</p>
                 </div>
 
                 <form method="POST" action="{{ url_for('login') }}">
                     <div class="mb-4">
-                        <label for="username" class="form-label fw-bold small text-uppercase" style="letter-spacing: 0.5px;">Username</label>
+                        <label for="username" class="form-label field-label">Username</label>
                         <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Enter username" required autocomplete="off">
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="form-label fw-bold small text-uppercase" style="letter-spacing: 0.5px;">Password</label>
+                        <label for="password" class="form-label field-label">Password</label>
                         <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter password" required>
                     </div>
-                    <div class="d-grid mt-5">
-                        <button type="submit" class="btn btn-dark btn-lg fw-bold">Sign In to Inventory</button>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Sign in to inventory</button>
                     </div>
                 </form>
-                
-                <div class="text-center mt-4 pt-3 border-top">
+
+                <div class="text-center mt-4 pt-4 border-top">
                     <small class="text-muted">TabChem Pharma Internal Systems &copy; 2026</small>
                 </div>
             </div>

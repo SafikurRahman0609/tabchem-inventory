@@ -3,128 +3,206 @@
 {% block title %}Dashboard - TabChem Pharma Inventory{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
-    <h2 class="fw-bolder text-dark mb-0" style="letter-spacing: -0.5px;">Live Inventory Control</h2>
-    <span class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill"><i class="bi bi-shield-check me-1"></i> System Secure</span>
-</div>
-
-<!-- Summary Cards -->
-<div class="row mb-5 gx-4 gy-3">
-    <div class="col-md-3">
-        <div class="summary-card glass-panel border-0">
-            <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Total Medicines</h6>
-            <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-boxes text-primary me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ total_medicines }}</h2>
-        </div>
+<div class="page-header">
+    <div>
+        <span class="section-kicker">Inventory Dashboard</span>
+        <h1 class="page-title">Live inventory control</h1>
+        <p class="page-subtitle mb-0">Track stock, manage medicine visuals, and keep the catalog clean from one bright workspace.</p>
     </div>
-    <div class="col-md-3">
-        <div class="summary-card glass-panel border-0 success-card">
-            <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Units In Stock</h6>
-            <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-stack text-success me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ total_units }}</h2>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="summary-card glass-panel border-0 warning-card">
-            <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Inventory Value</h6>
-            <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-currency-dollar text-warning me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ "%.2f"|format(total_value) }}</h2>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="summary-card glass-panel border-0 danger-card">
-            <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Low Stock Alerts</h6>
-            <h2 class="display-6 fw-bold text-dark mb-0"><i class="bi bi-exclamation-triangle text-danger me-2 shadow-sm rounded-circle p-1 bg-light"></i>{{ low_stock }}</h2>
-        </div>
+    <div class="status-pill">
+        <i class="bi bi-shield-check"></i>
+        System secure
     </div>
 </div>
 
-<!-- Search Bar & Filters -->
-<div class="search-container glass-panel mb-4 shadow-sm rounded-4 border-0 p-2">
-    <form action="{{ url_for('dashboard') }}" method="GET" class="d-flex w-100 align-items-center">
-        <i class="bi bi-search text-muted ms-3 me-2"></i>
-        <input type="text" name="search" class="form-control border-0 py-2 shadow-none" placeholder="Search formulations, brands, or IDs..." value="{{ search_query }}">
-        {% if search_query %}
-            <a href="{{ url_for('dashboard') }}" class="btn btn-light rounded-pill ms-2 text-muted fw-bold px-4">Clear</a>
-        {% endif %}
-        <button type="submit" class="btn btn-dark rounded-pill ms-2 px-4 shadow-sm">Search</button>
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-icon metric-icon-blue"><i class="bi bi-capsule"></i></div>
+            <span class="metric-label">Total medicines</span>
+            <h2 class="metric-value">{{ total_medicines }}</h2>
+            <p class="metric-note">Formulations currently tracked</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-icon metric-icon-teal"><i class="bi bi-box-seam"></i></div>
+            <span class="metric-label">Units in stock</span>
+            <h2 class="metric-value">{{ total_units }}</h2>
+            <p class="metric-note">Across all active products</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-icon metric-icon-amber"><i class="bi bi-currency-dollar"></i></div>
+            <span class="metric-label">Inventory value</span>
+            <h2 class="metric-value">${{ "%.2f"|format(total_value) }}</h2>
+            <p class="metric-note">Total catalog valuation</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-icon metric-icon-rose"><i class="bi bi-exclamation-diamond"></i></div>
+            <span class="metric-label">Low stock alerts</span>
+            <h2 class="metric-value">{{ low_stock }}</h2>
+            <p class="metric-note">Items at or below 40 units</p>
+        </div>
+    </div>
+</div>
+
+<div class="section-card mb-4">
+    <form action="{{ url_for('dashboard') }}" method="GET" class="row g-3 align-items-center">
+        <div class="col-lg">
+            <label class="field-label mb-2">Search inventory</label>
+            <div class="search-input-wrap">
+                <i class="bi bi-search search-input-icon"></i>
+                <input type="text" name="search" class="form-control form-control-lg ps-5" placeholder="Search by medicine name, brand, formula, dosage, or ID" value="{{ search_query }}">
+            </div>
+        </div>
+        <div class="col-auto align-self-end d-flex gap-2">
+            {% if search_query %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">Clear</a>
+            {% endif %}
+            <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
+        </div>
     </form>
 </div>
 
-<!-- Main Table and Forms -->
-<div class="table-container glass-panel p-4 rounded-4 shadow-sm border-0">
-    <!-- Add Medicine Inline Form -->
-    <div class="add-medicine-row p-3 rounded-3 mb-4 border border-light text-white" style="border-style: dashed !important; background: rgba(255,255,255,0.05);">
-        <h6 class="mb-3 text-muted fw-bold"><i class="bi bi-plus-circle me-1"></i> Add New Formulation</h6>
-        <form action="{{ url_for('add_medicine') }}" method="POST" class="row gx-2 gy-2">
-            <div class="col-md-2">
-                <input type="text" class="form-control shadow-none" name="name" placeholder="Name" required>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control shadow-none" name="brand" placeholder="Brand" required>
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control shadow-none" name="formula" placeholder="Formula" required>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control shadow-none" name="dosage" placeholder="Dosage" required>
-            </div>
-            <div class="col-md-1">
-                <input type="number" step="0.01" class="form-control shadow-none" name="price" placeholder="Price" required>
-            </div>
-            <div class="col-md-1">
-                <input type="number" class="form-control shadow-none" name="stock" placeholder="Stock" required>
-            </div>
-            <div class="col-md-1">
-                <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">Add</button>
-            </div>
-        </form>
+<div class="section-card mb-4">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Add Product</span>
+            <h2 class="section-title">Create a new formulation record</h2>
+        </div>
+        <p class="section-note mb-0">Upload a product image now so it appears immediately in the list below.</p>
     </div>
 
-    <!-- Medicines Table -->
-    <div class="table-responsive mt-3">
-        <table class="table custom-table align-middle mb-0">
+    <form action="{{ url_for('add_medicine') }}" method="POST" enctype="multipart/form-data" class="row g-4 align-items-start">
+        <div class="col-lg-4">
+            <div class="image-uploader" data-preview-scope>
+                <div class="image-preview-panel image-preview-panel-lg">
+                    <img class="preview-image d-none" alt="Selected medicine preview">
+                    <div class="preview-empty-state">
+                        <i class="bi bi-capsule-pill"></i>
+                        <span>No product image selected</span>
+                        <small>PNG, JPG, GIF, or WEBP up to 5MB</small>
+                    </div>
+                </div>
+
+                <label class="upload-trigger w-100">
+                    <i class="bi bi-upload"></i>
+                    Upload product image
+                    <input type="file" name="image" accept="image/*" class="image-input" data-preview-input hidden>
+                </label>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label field-label">Medicine name</label>
+                    <input type="text" class="form-control form-control-lg" name="name" placeholder="Enter product name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label field-label">Brand</label>
+                    <input type="text" class="form-control form-control-lg" name="brand" placeholder="Enter brand name" required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label field-label">Formula</label>
+                    <input type="text" class="form-control form-control-lg" name="formula" placeholder="Enter formulation details" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label field-label">Dosage</label>
+                    <input type="text" class="form-control form-control-lg" name="dosage" placeholder="Tablet, Syrup, Capsule..." required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label field-label">Price ($)</label>
+                    <input type="number" step="0.01" class="form-control form-control-lg" name="price" placeholder="0.00" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label field-label">Stock</label>
+                    <input type="number" class="form-control form-control-lg" name="stock" placeholder="0" required>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary btn-lg px-4">Add medicine</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="section-card">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Medicine List</span>
+            <h2 class="section-title">Current inventory records</h2>
+        </div>
+        <p class="section-note mb-0">{{ medicines|length }} result{% if medicines|length != 1 %}s{% endif %} shown</p>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table inventory-table align-middle mb-0">
             <thead>
                 <tr>
-                    <th style="width: 17%">Name</th>
-                    <th style="width: 15%">Brand</th>
-                    <th style="width: 25%">Formula</th>
-                    <th style="width: 10%">Dosage</th>
-                    <th style="width: 10%">Price ($)</th>
-                    <th style="width: 10%">Stock</th>
-                    <th class="text-end" style="width: 13%">Actions</th>
+                    <th>Product</th>
+                    <th>Formula</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for med in medicines %}
-                <tr class="{% if med.stock <= 40 %}bg-danger bg-opacity-10 border-danger{% endif %}">
+                <tr>
                     <td>
-                        <form id="update-form-{{ med.id }}" action="{{ url_for('update_medicine', id=med.id) }}" method="POST"></form>
-                        <input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable fw-bold" name="name" value="{{ med.name }}" required>
+                        <div class="medicine-identity">
+                            <div class="medicine-thumb">
+                                {% if med.image_filename %}
+                                    <img src="{{ url_for('static', filename=med.image_filename) }}" alt="{{ med.name }}">
+                                {% else %}
+                                    <div class="medicine-thumb-placeholder">
+                                        <i class="bi bi-image"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">{{ med.name }}</div>
+                                <div class="item-meta">#{{ med.id }} • {{ med.brand }}</div>
+                            </div>
+                        </div>
                     </td>
-                    <td><input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable text-muted" name="brand" value="{{ med.brand }}" required></td>
-                    <td><input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable text-muted" name="formula" value="{{ med.formula }}" required></td>
-                    <td><input type="text" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable text-muted" name="dosage" value="{{ med.dosage }}" required></td>
-                    <td><input type="number" step="0.01" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable fw-bold text-success" name="price" value="{{ med.price }}" required></td>
                     <td>
-                        <div class="d-flex align-items-center">
-                            <input type="number" form="update-form-{{ med.id }}" class="form-control form-control-sm border-0 bg-transparent input-editable me-2" name="stock" value="{{ med.stock }}" required style="width: 70px;">
+                        <div class="item-formula">{{ med.formula }}</div>
+                        <div class="item-meta">{{ med.dosage }}</div>
+                    </td>
+                    <td><span class="price-pill">${{ "%.2f"|format(med.price) }}</span></td>
+                    <td>
+                        <div class="stock-block">
+                            <span class="fw-semibold text-dark">{{ med.stock }} units</span>
                             {% if med.stock <= 40 %}
-                                <span class="badge bg-danger rounded-pill"><i class="bi bi-arrow-down-short"></i> Low</span>
+                                <span class="status-badge status-low">Low stock</span>
+                            {% else %}
+                                <span class="status-badge status-good">Healthy</span>
                             {% endif %}
                         </div>
                     </td>
-                    <td class="text-end text-nowrap">
-                        <button type="submit" form="update-form-{{ med.id }}" class="btn btn-sm btn-outline-success border-0"><i class="bi bi-check2-circle fs-5"></i></button>
-                        <form action="{{ url_for('delete_medicine', id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete {{ med.name }}?');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger border-0"><i class="bi bi-trash fs-5"></i></button>
-                        </form>
+                    <td class="text-end">
+                        <div class="d-inline-flex flex-wrap justify-content-end gap-2">
+                            <a href="{{ url_for('edit_medicine', id=med.id) }}" class="btn btn-outline-primary btn-sm action-btn">Edit</a>
+                            <form action="{{ url_for('delete_medicine', id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete {{ med.name }}?');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm action-btn">Delete</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="7" class="text-center text-muted py-5">
-                        <div class="mt-4">
-                            <i class="bi bi-inboxes display-4 text-secondary mb-3 opacity-50"></i>
-                            <h5 class="fw-bold">No medicines found.</h5>
-                            <p>Try clearing your search or add a new formulation above.</p>
+                    <td colspan="5" class="text-center py-5">
+                        <div class="empty-state">
+                            <i class="bi bi-inboxes"></i>
+                            <h5 class="fw-bold mb-2">No medicines found</h5>
+                            <p class="mb-0">Try clearing your search or add a new formulation above.</p>
                         </div>
                     </td>
                 </tr>
