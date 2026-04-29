@@ -1,6 +1,9 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from sqlalchemy import inspect, text
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -9,9 +12,26 @@ db = SQLAlchemy(app)
 
 from app import models, routes
 
+
+def ensure_upload_directory():
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+
+def ensure_medicine_schema():
+    inspector = inspect(db.engine)
+    if not inspector.has_table('medicine'):
+        return
+
+    column_names = {column['name'] for column in inspector.get_columns('medicine')}
+    if 'image_filename' not in column_names:
+        with db.engine.begin() as connection:
+            connection.execute(text('ALTER TABLE medicine ADD COLUMN image_filename VARCHAR(255)'))
+
 # Create tables and initial data
 with app.app_context():
     db.create_all()
+    ensure_upload_directory()
+    ensure_medicine_schema()
     # Check if we have data, if not add some samples
     if not models.Medicine.query.first():
         samples = [
