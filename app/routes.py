@@ -4,10 +4,19 @@ from uuid import uuid4
 from flask import current_app, flash, redirect, render_template, request, session, url_for
 from app import app, db
 from app.models import Medicine
-from sqlalchemy import or_
+from sqlalchemy import String, cast, or_
 from werkzeug.utils import secure_filename
 
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+DEFAULT_SORT_OPTION = 'newest'
+SORT_OPTIONS = {
+    'newest': Medicine.id.desc(),
+    'name_asc': Medicine.name.asc(),
+    'price_asc': Medicine.price.asc(),
+    'price_desc': Medicine.price.desc(),
+    'stock_asc': Medicine.stock.asc(),
+    'stock_desc': Medicine.stock.desc(),
+}
 
 
 def _apply_medicine_form(medicine):
@@ -53,6 +62,20 @@ def _save_uploaded_image(file_storage, current_filename=None):
 
     return relative_path
 
+
+def _build_inventory_search_filters(search_query):
+    search_pattern = f'%{search_query}%'
+    searchable_columns = [
+        Medicine.name,
+        Medicine.brand,
+        Medicine.formula,
+        Medicine.dosage,
+        cast(Medicine.id, String),
+        cast(Medicine.stock, String),
+        cast(Medicine.price, String),
+    ]
+    return [column.ilike(search_pattern) for column in searchable_columns]
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -84,20 +107,27 @@ def dashboard():
         return redirect(url_for('login'))
 
     search_query = request.args.get('search', '').strip()
+    category_filter = request.args.get('category', '').strip()
+    sort_option = request.args.get('sort', DEFAULT_SORT_OPTION).strip() or DEFAULT_SORT_OPTION
+    selected_sort = sort_option if sort_option in SORT_OPTIONS else DEFAULT_SORT_OPTION
+
+    medicines_query = Medicine.query
 
     if search_query:
-        search_pattern = f'%{search_query}%'
-        filters = [
-            Medicine.name.ilike(search_pattern),
-            Medicine.brand.ilike(search_pattern),
-            Medicine.formula.ilike(search_pattern),
-            Medicine.dosage.ilike(search_pattern),
-        ]
-        if search_query.isdigit():
-            filters.append(Medicine.id == int(search_query))
-        medicines = Medicine.query.filter(or_(*filters)).order_by(Medicine.id.desc()).all()
-    else:
-        medicines = Medicine.query.order_by(Medicine.id.desc()).all()
+        medicines_query = medicines_query.filter(or_(*_build_inventory_search_filters(search_query)))
+
+    if category_filter:
+        medicines_query = medicines_query.filter(Medicine.dosage == category_filter)
+
+    medicines = medicines_query.order_by(SORT_OPTIONS[selected_sort]).all()
+
+    dosage_categories = [
+        dosage for (dosage,) in db.session.query(Medicine.dosage)
+        .distinct()
+        .order_by(Medicine.dosage.asc())
+        .all()
+        if dosage
+    ]
 
     all_medicines = Medicine.query.all()
     total_medicines = len(all_medicines)
@@ -111,7 +141,10 @@ def dashboard():
                            total_units=total_units,
                            total_value=total_value,
                            low_stock=low_stock,
-                           search_query=search_query)
+                           search_query=search_query,
+                           dosage_categories=dosage_categories,
+                           selected_category=category_filter,
+                           selected_sort=selected_sort)
 
 @app.route('/add', methods=['POST'])
 def add_medicine():

@@ -52,20 +52,41 @@
 
 <div class="section-card mb-4">
     <form action="{{ url_for('dashboard') }}" method="GET" class="row g-3 align-items-center">
-        <div class="col-lg">
+        <div class="col-lg-6">
             <label class="field-label mb-2">Search inventory</label>
             <div class="search-input-wrap">
                 <i class="bi bi-search search-input-icon"></i>
-                <input type="text" name="search" class="form-control form-control-lg ps-5" placeholder="Search by medicine name, brand, formula, dosage, or ID" value="{{ search_query }}">
+                <input type="text" name="search" class="form-control form-control-lg ps-5" placeholder="Search by name, brand, formula, dosage, stock, price, or ID" value="{{ search_query }}">
             </div>
         </div>
-        <div class="col-auto align-self-end d-flex gap-2">
-            {% if search_query %}
+        <div class="col-md-3 col-lg-3">
+            <label class="field-label mb-2">Category</label>
+            <select name="category" class="form-select form-select-lg">
+                <option value="">All categories</option>
+                {% for dosage in dosage_categories %}
+                    <option value="{{ dosage }}" {% if dosage == selected_category %}selected{% endif %}>{{ dosage }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <label class="field-label mb-2">Sort by</label>
+            <select name="sort" class="form-select form-select-lg">
+                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+                <option value="name_asc" {% if selected_sort == 'name_asc' %}selected{% endif %}>Name A-Z</option>
+                <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Price low-high</option>
+                <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Price high-low</option>
+                <option value="stock_asc" {% if selected_sort == 'stock_asc' %}selected{% endif %}>Stock low-high</option>
+                <option value="stock_desc" {% if selected_sort == 'stock_desc' %}selected{% endif %}>Stock high-low</option>
+            </select>
+        </div>
+        <div class="col-12 d-flex flex-wrap gap-2 justify-content-lg-end align-items-end">
+            {% if search_query or selected_category or selected_sort != 'newest' %}
                 <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">Clear</a>
             {% endif %}
             <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
         </div>
     </form>
+    <p class="section-note mt-3 mb-0">Search is now flexible across names, brands, formulas, dosage types, stock numbers, prices, and product IDs.</p>
 </div>
 
 <div class="section-card mb-4">
