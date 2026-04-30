@@ -15,7 +15,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light site-navbar mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('dashboard') if session.get('logged_in') else url_for('login') }}">
+            <a class="navbar-brand" href="{{ url_for('home') if session.get('logged_in') else url_for('login') }}">
                 <span class="brand-mark">TC</span>
                 <span>TabChem Pharma</span>
             </a>
